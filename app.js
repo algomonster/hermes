@@ -11,6 +11,8 @@ var messages = require('./routes/messages');
 
 var app = express();
 
+var pubsub = require('node-internal-pubsub');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -65,8 +67,15 @@ var server = require('http').createServer()
     , port = 4000;
 
 wss.on('connection', function connection(webSocketsClient) {
+    console.log('Connected new WebSockets client');
+    var subscriber = pubsub.createSubscriber();
+    subscriber.psubscribe(/channel/);
+    subscriber.on('pmessage', function(channel, message) {
+        console.log('WS Connection subscriber was receive new message from internal bus', channel, message);
+        webSocketsClient.send(JSON.stringify(message));
+    });
 
-    var location = url.parse(webSocketsClient.upgradeReq.url, true);
+    // var location = url.parse(webSocketsClient.upgradeReq.url, true);
     // you might use location.query.access_token to authenticate or share sessions
     // or ws.upgradeReq.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
 
@@ -74,11 +83,15 @@ wss.on('connection', function connection(webSocketsClient) {
         console.log('received: %s', message);
     });
 
+    webSocketsClient.on('close', function closing(){
+        subscriber.punsubscribe(/channel/);
+        console.log('Client connection closed');
+    });
+
     webSocketsClient.send('something');
 });
 
 server.on('request', app);
 server.listen(port, function () { console.log('Listening on ' + server.address().port) });
-
 
 module.exports = app;

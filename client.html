@@ -1,0 +1,23 @@
+<script type='text/javascript'>
+
+    window.WebSocket = window.WebSocket || window.MozWebSocket;
+
+    var connection = new WebSocket('ws://localhost:4000');
+
+    connection.onopen = function () {
+        console.log('Hermes connection is opened and ready to use');
+    };
+
+    connection.onerror = function (error) {
+        console.log('An error occurred when sending/receiving data', error);
+    };
+
+    connection.onmessage = function (message) {
+        console.log('Message reveiced', message);
+    };
+
+    connection.onclose = function(){
+        console.log('Hermes connection closed');
+    }
+
+</script>
