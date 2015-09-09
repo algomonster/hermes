@@ -58,5 +58,27 @@ app.use(function(err, req, res, next) {
   });
 });
 
+var server = require('http').createServer()
+    , url = require('url')
+    , WebSocketServer = require('ws').Server
+    , wss = new WebSocketServer({ server: server })
+    , port = 4000;
+
+wss.on('connection', function connection(webSocketsClient) {
+
+    var location = url.parse(webSocketsClient.upgradeReq.url, true);
+    // you might use location.query.access_token to authenticate or share sessions
+    // or ws.upgradeReq.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
+
+    webSocketsClient.on('message', function incoming(message) {
+        console.log('received: %s', message);
+    });
+
+    webSocketsClient.send('something');
+});
+
+server.on('request', app);
+server.listen(port, function () { console.log('Listening on ' + server.address().port) });
+
 
 module.exports = app;
