@@ -1,23 +1,53 @@
-<script type='text/javascript'>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hermes client example</title>
+</head>
+<body>
+<textarea id="chat-content" style="width:500px;height:300px"></textarea><br/>
+<input type="text" id="message" placeholder="Enter message"/>
+<input type="button" value="Send" onclick="sendMessage()"/>
 
-    window.WebSocket = window.WebSocket || window.MozWebSocket;
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min.js"></script>
+<script type="text/javascript">
+    // Create a connection to http://localhost:9999/echo
+    var sock = new SockJS('http://localhost:4000/comet');
 
-    var connection = new WebSocket('ws://localhost:4000');
-
-    connection.onopen = function () {
-        console.log('Hermes connection is opened and ready to use');
+    // Open the connection
+    sock.onopen = function() {
+        console.log('Connection opened');
     };
 
-    connection.onerror = function (error) {
-        console.log('An error occurred when sending/receiving data', error);
+    // On connection close
+    sock.onclose = function() {
+        console.log('Connection closed');
     };
 
-    connection.onmessage = function (message) {
-        console.log('Message reveiced', message);
+    // On receive message from server
+    sock.onmessage = function(e) {
+        // Get the content
+        var content = e.data;
+        // Append the text to text area (using jQuery)
+        $('#chat-content').val(function(i, text){
+            return text + content + '\n';
+        });
     };
 
-    connection.onclose = function(){
-        console.log('Hermes connection closed');
+    // Function for sending the message to server
+    function sendMessage(){
+        // Get the content from the textbox
+        var message = $('#message').val();
+
+        // The object to send
+        var send = {
+            message: message,
+        };
+
+        // Send it now
+        sock.send(JSON.stringify(send));
     }
-
 </script>
+</body>
+</html>
