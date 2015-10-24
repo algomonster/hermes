@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pubsub = require('node-internal-pubsub');
 var publisher = pubsub.createPublisher();
+var status = require('http-status');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -19,7 +20,7 @@ router.post('/', function (req, res) {
         publisher.publish(channelName , messageString);
         res.send('Message published to channel [' + channelName + ']');
     } else {
-        res.send('Channel must be specified.');
+        return res.status(status.UNPROCESSABLE_ENTITY) . json({ error: 'Channel must be specified' });
     }
 });
 
