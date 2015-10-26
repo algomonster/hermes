@@ -3,7 +3,7 @@ var superagent = require('superagent');
 var server = require('../app.js');
 var status = require('http-status');
 
-describe('/messages', function() {
+describe('Messages API', function() {
 
     before(function() {
         server.listen(4000);
