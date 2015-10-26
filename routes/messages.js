@@ -14,7 +14,6 @@ router.post('/', function (req, res) {
     if (typeof req.body.channel !== 'undefined' && req.body.channel){
         var channelName = 'channel:' + req.body.channel;
         var messageData = req.body;
-        delete messageData.channel;
         var messageString = JSON.stringify(messageData);
         console.log('REST API publishes new message to channel', channelName, messageString);
         publisher.publish(channelName , messageString);
