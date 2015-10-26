@@ -17,6 +17,7 @@
     "node-internal-pubsub": "1.0.x",
     "serve-favicon": "~2.3.0",
     "sockjs": "~0.3.15",
+    "superagent": "^1.4.0",
     "ws": "^0.8.0"
   }
 }
