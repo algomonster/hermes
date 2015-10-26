@@ -10,4 +10,5 @@ node_js:
   - "iojs"
 
 before_script:
-  - npm install -g mocha superagent
+  - npm install -g mocha
+  - npm install -g superagent
