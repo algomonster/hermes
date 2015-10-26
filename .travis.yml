@@ -11,4 +11,3 @@ node_js:
 
 before_script:
   - 'npm install -g mocha'
-  - 'npm install -g superagent'
