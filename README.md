@@ -12,7 +12,7 @@ node ./bin/www
 
 Install mocha
 ```
-sudo npm install -g mocha
+sudo npm install -g mocha superagent
 ```
 
 mocha tests/mocha tests/01-index-page-is-working.js
