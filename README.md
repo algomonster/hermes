@@ -10,6 +10,11 @@ Run server using default settings:
 node ./bin/www
 ```
 
+Run server via PM2:
+```
+pm2 start ./bin/www --name "hermes"
+```
+
 ### Run tests
 
 Install mocha
