@@ -17,9 +17,11 @@ pm2 start ./bin/www --name "hermes"
 
 ### Run tests
 
-Install mocha
 ```
-sudo npm install -g mocha
+npm test
 ```
 
-mocha tests/mocha tests
+### Run coverage analyse
+```
+istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
+```
