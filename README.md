@@ -2,6 +2,7 @@
 Messages server
 
 [![Build Status](https://secure.travis-ci.org/algomonster/hermes.png)](http://travis-ci.org/algomonster/hermes)
+[![Coverage Status](https://coveralls.io/repos/algomonster/hermes/badge.svg?branch=master&service=github)](https://coveralls.io/github/algomonster/hermes?branch=master)
 
 ## Command line examples
 
