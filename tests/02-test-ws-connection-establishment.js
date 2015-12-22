@@ -2,14 +2,19 @@ var assert = require('assert');
 var server = require('../app.js');
 var WebSocketClient = require('websocket').client;
 var superagent = require('superagent');
+var config = require('config');
 
-var url = 'ws://localhost:4000/comet/websocket';
-var apiURL = 'http://localhost:4000/';
+
+var proto = config.has('Server.SSL') && config.get('Server.SSL') ? 'https' : 'http';
+var wsProto = config.has('Server.SSL') && config.get('Server.SSL') ? 'wss' : 'ws';
+var domain = config.get('Server.domain');
+var url = wsProto + '://' + domain + ':' + config.get('Server.port') + '/comet/websocket';
+var apiURL = proto + '://' + domain + ':' + config.get('Server.port') + '/';
 
 describe('WebSockets connections', function() {
 
     before(function() {
-        server.listen(4000);
+        server.listen(config.get('Server.port'));
     });
 
     after(function() {

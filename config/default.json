@@ -1,8 +1,9 @@
 {
   "Server": {
+    "domain": "localhost",
+    "port": 4000,
     "ssl": false,
     "options": {
-
     }
   }
 }
