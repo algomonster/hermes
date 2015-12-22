@@ -31,3 +31,8 @@ node_modules
 
 # Coveralls config with access token
 .coveralls.yml
+
+# Local configs and production configs
+/config/production.json
+/config/production.js
+/config/local.json
