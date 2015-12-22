@@ -1,0 +1,15 @@
+var fs = require('fs');
+
+module.exports = {
+
+    Server: {
+        SSL: true,
+        options: {
+            key: "" + fs.readFileSync('/etc/ssl/private/domain.key')
+            // , ca: [ fs.readFileSync('/etc/ssl/private/my-root-ca')]
+            , cert: "" + fs.readFileSync('/etc/ssl/private/domain.crt')
+            , requestCert: false
+            , rejectUnauthorized: false
+        }
+    }
+};

@@ -1,6 +1,8 @@
 {
   "Server": {
-    "SSL": false,
-    "options": {}
+    "ssl": false,
+    "options": {
+
+    }
   }
 }
