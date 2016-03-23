@@ -77,15 +77,20 @@ sockJsServer.on('connection', function(connection) {
 
     //console.log('Connected new WebSockets client');
     var subscriber = pubsub.createSubscriber();
+
+    // @TODO Dummy subscription for all channels ny regexp, should be removed.
     subscriber.psubscribe(/channel/);
+
     subscriber.on('pmessage', function(pattern, channel, message) {
         //console.log('WS Connection subscriber was receive new message from internal bus', channel, message);
         connection.write(message);
     });
 
+
+    // @TODO Handle messages from clients received over WebSockets...
     connection.on('data', function(message) {
-        connection.write(message);
-        //console.log('received: %s', message);
+        // connection.write(message);
+        // console.log('Received from client: %s', message);
     });
 
     connection.on('close', function() {
