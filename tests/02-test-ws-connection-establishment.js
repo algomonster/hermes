@@ -29,7 +29,7 @@ describe('WebSockets connections', function() {
     });
 
     it('Receives message sent via REST API', function(done){
-        client = new WebSocketClient();
+        var client = new WebSocketClient();
         var signal = {channel: 'TEST_CHANNEL', rate: Math.random()};
 
         client.connect(url, null, null, null, null);
