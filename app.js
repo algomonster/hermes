@@ -92,8 +92,6 @@ sockJsServer.on('connection', function(connection) {
         subscriber.punsubscribe(/channel/);
         //console.log('Client connection closed');
     });
-
-    connection.write('Welcome to Hermes');
 });
 
 // Install Echo Server as handler

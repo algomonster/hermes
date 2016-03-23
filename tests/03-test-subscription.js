@@ -20,34 +20,46 @@ describe('Subscription', function() {
     after(function() {
     });
 
-    it('Receives message sent via REST API', function(done){
+    it('Receiving messages only from specified channel', function(done){
+
+        this.timeout(10000);
 
         var client = new WebSocketClient();
-        var signal = {channel: 'TEST_CHANNEL', rate: Math.random()};
+
+        var waitedMessagesCount = 0;
+        var receivedMessageCount = 0;
+        var waitedChannel = 'TEST_CHANNEL_3';
+        var messages = [];
+
+        for(var i = 0; i < 200; i++){
+            var channel = Math.random() > 0.5 ? waitedChannel : waitedChannel + '_' + Math.random();
+            if (channel == waitedChannel) {
+                waitedMessagesCount++;
+            }
+            messages.push({channel: channel, data: null});
+        }
 
         client.connect(url, null, null, null, null);
         client.on('connect', function(connection){
-            connection.on('message', function(data){
-                var utf8Data = data.utf8Data;
-                var receivedData = {};
-                console.log('Message received: ' + utf8Data);
 
+            connection.on('message', function(data){
                 try{
-                    receivedData = JSON.parse(utf8Data);
+                    var receivedData = JSON.parse(data.utf8Data);
                 } catch (e){
                     console.log('Message skipped because not JSON object. ' + e);
                 }
+                receivedMessageCount++;
+                assert.deepEqual(receivedData.channel, waitedChannel);
 
-                if ('channel' in receivedData){
-                    assert.deepEqual(signal, receivedData);
+                if (receivedMessageCount == waitedMessagesCount) {
                     done();
                 }
             });
 
-            // Send message through REST API after
-            superagent.post(apiURL + 'messages', signal, function(){
-
-            });
+            for(var i = 0; i < messages.length; i++){
+                superagent.post(apiURL + 'messages', messages[i], function(){
+                });
+            }
         });
 
     });

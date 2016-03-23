@@ -30,7 +30,8 @@ describe('WebSockets connections', function() {
 
     it('Receives message sent via REST API', function(done){
         var client = new WebSocketClient();
-        var signal = {channel: 'TEST_CHANNEL', rate: Math.random()};
+        var channel = 'TEST_CHANNEL_2';
+        var signal = {channel: channel, rate: Math.random()};
 
         client.connect(url, null, null, null, null);
         client.on('connect', function(connection){
@@ -45,7 +46,7 @@ describe('WebSockets connections', function() {
                     console.log('Message skipped because not JSON object. ' + e);
                 }
 
-                if ('channel' in receivedData){
+                if ('channel' in receivedData && receivedData.channel == channel){
                     assert.deepEqual(signal, receivedData);
                     done();
                 }
