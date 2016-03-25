@@ -22,8 +22,6 @@ describe('Subscription', function() {
 
     it('Receiving messages only from specified channel', function(done){
 
-        this.timeout(10000);
-
         var client = new WebSocketClient();
 
         var waitedMessagesCount = 0;
@@ -31,7 +29,7 @@ describe('Subscription', function() {
         var waitedChannel = 'TEST_CHANNEL_3';
         var messages = [];
 
-        for(var i = 0; i < 2; i++){
+        for(var i = 0; i < 100; i++){
             var channel = Math.random() > 0.5 ? waitedChannel : waitedChannel + '_' + Math.random();
             if (channel == waitedChannel) {
                 waitedMessagesCount++;
@@ -42,16 +40,21 @@ describe('Subscription', function() {
         client.connect(url, null, null, null, null);
         client.on('connect', function(connection){
 
+            // Subscribe to wanted channel
+            var message = {channel: 'system', command: 'subscribe', data: {channel: waitedChannel}};
+            connection.send(JSON.stringify(message));
+
             connection.on('message', function(data){
                 try{
                     var receivedData = JSON.parse(data.utf8Data);
                 } catch (e){
-                    console.log('Message skipped because not JSON object. ' + e);
+                    // Skip messages with invalid JSON
                 }
                 receivedMessageCount++;
                 assert.deepEqual(receivedData.channel, waitedChannel);
 
                 if (receivedMessageCount == waitedMessagesCount) {
+                    console.log('Received messages count: %s', receivedMessageCount);
                     done();
                 }
             });

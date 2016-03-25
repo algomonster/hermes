@@ -10,7 +10,6 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function (req, res) {
-    //res.send(JSON.stringify(req.body));
     if (typeof req.body.channel !== 'undefined' && req.body.channel){
         var channelName = req.body.channel;
         var messageData = req.body;
