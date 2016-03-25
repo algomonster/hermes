@@ -35,6 +35,11 @@ describe('WebSockets connections', function() {
 
         client.connect(url, null, null, null, null);
         client.on('connect', function(connection){
+
+            var message = {channel: 'system', command: 'subscribe', data: {channel: channel}};
+
+            connection.send(JSON.stringify(message));
+
             connection.on('message', function(data){
                 var utf8Data = data.utf8Data;
                 var receivedData = {};

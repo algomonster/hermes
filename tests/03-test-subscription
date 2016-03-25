@@ -31,7 +31,7 @@ describe('Subscription', function() {
         var waitedChannel = 'TEST_CHANNEL_3';
         var messages = [];
 
-        for(var i = 0; i < 200; i++){
+        for(var i = 0; i < 2; i++){
             var channel = Math.random() > 0.5 ? waitedChannel : waitedChannel + '_' + Math.random();
             if (channel == waitedChannel) {
                 waitedMessagesCount++;

@@ -4,6 +4,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var util = require('util');
 
 var routes = require('./routes/index');
 var messages = require('./routes/messages');
@@ -79,10 +80,15 @@ sockJsServer.on('connection', function(connection) {
     var subscriber = pubsub.createSubscriber();
 
     // @TODO Dummy subscription for all channels ny regexp, should be removed.
-    subscriber.psubscribe(/channel/);
+    // subscriber.psubscribe(/channel/);
 
     subscriber.on('pmessage', function(pattern, channel, message) {
-        //console.log('WS Connection subscriber was receive new message from internal bus', channel, message);
+        console.log('Pattern [%s], channel [%]: client got new message [%s]', pattern, channel, message);
+        connection.write(message);
+    });
+
+    subscriber.on('message', function(channel, message) {
+        console.log('Channel [%s]: client got new message [%s]', channel, message);
         connection.write(message);
     });
 
@@ -90,7 +96,20 @@ sockJsServer.on('connection', function(connection) {
     // @TODO Handle messages from clients received over WebSockets...
     connection.on('data', function(message) {
         // connection.write(message);
-        // console.log('Received from client: %s', message);
+        console.log('Received from client:', message);
+
+        try {
+            var msg = JSON.parse(message);
+            if ('channel' in msg) {
+                var channel = msg.channel;
+                if (channel == 'system' && msg.command == 'subscribe') {
+                    subscriber.subscribe(msg.data.channel);
+                    console.log('Client subscribed to channel [' + msg.data.channel + ']');
+                }
+            }
+        } catch (e) {
+            // Ignore messages with invalid JSON
+        }
     });
 
     connection.on('close', function() {

@@ -12,10 +12,10 @@ router.get('/', function(req, res) {
 router.post('/', function (req, res) {
     //res.send(JSON.stringify(req.body));
     if (typeof req.body.channel !== 'undefined' && req.body.channel){
-        var channelName = 'channel:' + req.body.channel;
+        var channelName = req.body.channel;
         var messageData = req.body;
         var messageString = JSON.stringify(messageData);
-        console.log('REST API publishes new message to channel', channelName, messageString);
+        console.log('REST API publishes new message to channel [%s]', channelName, messageString);
         publisher.publish(channelName , messageString);
         res.send('Message published to channel [' + channelName + ']');
     } else {
