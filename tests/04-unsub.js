@@ -23,7 +23,7 @@ describe('Unsubscribe', function() {
     it('Stop receiving messages after unsubscribe', function(done){
 
         var client = new WebSocketClient();
-        var waitedChannel = 'TEST_CHANNEL_3';
+        var waitedChannel = 'TEST_CHANNEL_4';
 
         client.connect(url, null, null, null, null);
 
@@ -39,10 +39,16 @@ describe('Unsubscribe', function() {
                 if (!receivedMessagesCount++) {
                     var message = {channel: 'system', command: 'unsubscribe', data: {channel: waitedChannel}};
                     connection.send(JSON.stringify(message));
-                    var msg = {channel: waitedChannel, data: Math.random()};
-                    superagent.post(apiURL + 'messages', msg, function(){});
+
+                    var message = {channel: waitedChannel, data: Math.random()};
+                    superagent.post(apiURL + 'messages', message, function(){});
+
+                    setTimeout(done, 100);
+                } else {
+                    // We got second message at least, and it is wrong behavior.
+                    assert.deepEqual(0, 1);
                 }
-                assert.deepEqual(0, 1);
+
             });
 
             var msg = {channel: waitedChannel, data: Math.random()};

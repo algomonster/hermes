@@ -13,6 +13,9 @@ var app = express();
 
 var pubsub = require('node-internal-pubsub');
 
+// Load plugins manager
+var plugins = new (require('./plugins'))();
+
 // Configs loading
 var config = require('config');
 console.log('Used configuration: ', config);
@@ -97,19 +100,21 @@ sockJsServer.on('connection', function(connection) {
     connection.on('data', function(message) {
         // connection.write(message);
         console.log('Received from client:', message);
+        plugins.process(connection, message, subscriber);
 
-        try {
-            var msg = JSON.parse(message);
-            if ('channel' in msg) {
-                var channel = msg.channel;
-                if (channel == 'system' && msg.command == 'subscribe') {
-                    subscriber.subscribe(msg.data.channel);
-                    console.log('Client subscribed to channel [' + msg.data.channel + ']');
-                }
-            }
-        } catch (e) {
-            // Ignore messages with invalid JSON
-        }
+        // try {
+        //     var msg = JSON.parse(message);
+        //
+        //     if ('channel' in msg) {
+        //         var channel = msg.channel;
+        //         if (channel == 'system' && msg.command == 'subscribe') {
+        //             subscriber.subscribe(msg.data.channel);
+        //             console.log('Client subscribed to channel [' + msg.data.channel + ']');
+        //         }
+        //     }
+        // } catch (e) {
+        //     // Ignore messages with invalid JSON
+        // }
     });
 
     connection.on('close', function() {
