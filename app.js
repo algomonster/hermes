@@ -78,12 +78,8 @@ if (config.has('Server.SSL') && config.get('Server.SSL')){
 var sockJsServer = sockjs.createServer({ sockjs_url: 'http://cdn.jsdelivr.net/sockjs/1.0.1/sockjs.min.js' });
 
 sockJsServer.on('connection', function(connection) {
-
-    //console.log('Connected new WebSockets client');
+    
     var subscriber = pubsub.createSubscriber();
-
-    // @TODO Dummy subscription for all channels ny regexp, should be removed.
-    // subscriber.psubscribe(/channel/);
 
     subscriber.on('pmessage', function(pattern, channel, message) {
         console.log('Pattern [%s], channel [%]: client got new message [%s]', pattern, channel, message);
@@ -95,31 +91,12 @@ sockJsServer.on('connection', function(connection) {
         connection.write(message);
     });
 
-
-    // @TODO Handle messages from clients received over WebSockets...
     connection.on('data', function(message) {
-        // connection.write(message);
-        console.log('Received from client:', message);
         plugins.process(connection, message, subscriber);
-
-        // try {
-        //     var msg = JSON.parse(message);
-        //
-        //     if ('channel' in msg) {
-        //         var channel = msg.channel;
-        //         if (channel == 'system' && msg.command == 'subscribe') {
-        //             subscriber.subscribe(msg.data.channel);
-        //             console.log('Client subscribed to channel [' + msg.data.channel + ']');
-        //         }
-        //     }
-        // } catch (e) {
-        //     // Ignore messages with invalid JSON
-        // }
     });
 
     connection.on('close', function() {
         subscriber.punsubscribe(/channel/);
-        //console.log('Client connection closed');
     });
 });
 
