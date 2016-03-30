@@ -11,7 +11,7 @@ var domain = config.get('Server.domain');
 var url = wsProto + '://' + domain + ':' + config.get('Server.port') + '/comet/websocket';
 var apiURL = proto + '://' + domain + ':' + config.get('Server.port') + '/';
 
-describe('Subscription', function() {
+describe('Subscribe', function() {
 
     before(function() {
         server.listen(config.get('Server.port'));
