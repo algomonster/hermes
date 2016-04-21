@@ -10,6 +10,8 @@ function Plugins() {
         system: new (require('./system'))()
     };
 
+    var core = new (require('../core'))();
+
     console.log(plugins);
 
     /**
@@ -23,6 +25,10 @@ function Plugins() {
             var msg = JSON.parse(message);
             var channel = msg.channel;
             if ('channel' in msg){
+
+                // Any message sent to channel should be processed by core
+                core.process(message);
+
                 // console.log('That, this', that, this);
                 if (channel in plugins) {
                     console.log('Required plugin found and message will be processed.');
