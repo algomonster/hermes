@@ -27,12 +27,12 @@ function Plugins() {
             if ('channel' in msg){
 
                 // Any message sent to channel should be processed by core
-                core.process(message);
+                msg = core.process(msg);
 
                 // console.log('That, this', that, this);
                 if (channel in plugins) {
                     console.log('Required plugin found and message will be processed.');
-                    if (plugins[channel].process(connection, msg, subscriber)) {
+                    if (plugins[channel].process(connection, msg, subscriber, core)) {
                         // Message processed successfully
                     }
                 } else {

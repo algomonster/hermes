@@ -42,6 +42,10 @@
 
             var message = {channel: 'system', command: 'subscribe', data: {channel: 'test'}};
             sock.send(JSON.stringify(message));
+            var message = {channel: 'test', data: Math.random()};
+            sock.send(JSON.stringify(message));
+            var message = {channel: 'system', command: 'history', data: {channel: 'test'}};
+            sock.send(JSON.stringify(message));
         };
 
         // On connection close
