@@ -100,9 +100,8 @@ sockJsServer.on('connection', function(connection) {
     connection.on('close', function() {
         console.log('Connection closed.');
         // @TODO message duplicates, bug because disconnect processing is wrong. Create a test for this bug and fix it.
-        // subscriber.punsubscribe();
-        // subscriber.unsubscribe();
-        // delete subscriber;
+        subscriber.punsubscribe();
+        subscriber.unsubscribe();
     });
 });
 
