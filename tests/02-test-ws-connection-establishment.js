@@ -52,6 +52,7 @@ describe('WebSockets connections', function() {
                 }
 
                 if ('channel' in receivedData && receivedData.channel == channel){
+                    delete receivedData['serverTime'];
                     assert.deepEqual(signal, receivedData);
                     done();
                 }

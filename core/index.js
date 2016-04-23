@@ -2,10 +2,15 @@
  *
  */
 var FifoArray = require('fifo-array');
+var history = {};
+var i = 0;
 
 function Core(config) {
 
-    var history = {};
+
+    var index = ++i;
+    console.log('Core instance #' + index + ' created.');
+
     /**
      * Process messages
      *
@@ -14,7 +19,7 @@ function Core(config) {
     this.process = function (message) {
         message.serverTime = (new Date()).getTime();
         if (!(message.channel in history)){
-            var historyDepth = 1;
+            var historyDepth = 10;
             try {
                 historyDepth = config.core.history.maxDepth;
             } catch (e) {}

@@ -9,6 +9,7 @@ var util = require('util');
 var routes = require('./routes/index');
 var routeMessages = require('./routes/messages');
 var routeClient = require('./routes/client');
+var routeHistory = require('./routes/history');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/messages', routeMessages);
 app.use('/client', routeClient);
+app.use('/history', routeHistory);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -3,6 +3,7 @@ var router = express.Router();
 var pubsub = require('node-internal-pubsub');
 var publisher = pubsub.createPublisher();
 var status = require('http-status');
+var core = new (require('../core'))();
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -13,6 +14,10 @@ router.post('/', function (req, res) {
     if (typeof req.body.channel !== 'undefined' && req.body.channel){
         var channelName = req.body.channel;
         var messageData = req.body;
+
+        // Any message with specified channel should be processed by core.
+        core.process(messageData);
+
         var messageString = JSON.stringify(messageData);
         console.log('REST API publishes new message to channel [%s]', channelName, messageString);
         publisher.publish(channelName , messageString);
