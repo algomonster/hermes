@@ -1,8 +1,8 @@
-# hermes
+# Elsendes
 Messages server
 
-[![Build Status](https://secure.travis-ci.org/algomonster/hermes.png)](http://travis-ci.org/algomonster/hermes)
-[![Coverage Status](https://coveralls.io/repos/algomonster/hermes/badge.svg?branch=master&service=github)](https://coveralls.io/github/algomonster/hermes?branch=master)
+[![Build Status](https://secure.travis-ci.org/sashicorp/elsendes.png)](http://travis-ci.org/sashicorp/elsendes)
+[![Coverage Status](https://coveralls.io/repos/sashicorp/elsendes/badge.svg?branch=master&service=github)](https://coveralls.io/github/sashicorp/elsendes?branch=master)
 
 ## Command line examples
 
@@ -13,7 +13,7 @@ node ./bin/www
 
 Run server via PM2:
 ```
-pm2 start ./bin/www --name "hermes"
+pm2 start ./bin/www --name "elsendes"
 ```
 
 ### Run tests
